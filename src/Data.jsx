@@ -68,7 +68,7 @@ function Data() {
                     <div className="flex"><img src={King} className="w-5" alt="" /><p className="rounded-3 font-bold ms-2">{data.LeaderName}</p></div>
                 </div>
              
-                    <div className="grid grid-cols-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
                     {data.Items.split(",").map((item, index) => (
                           <div key={index}>
                           <div className="p-1 m-2 flex flex-col shadow-md rounded-md outline outline-1 outline-slate-300/75 items-center justify-center">
