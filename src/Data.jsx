@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 import Bag_of_clothes from '../src/assets/Bag_of_clothes.png';
 import Battery from '../src/assets/Battery.png';
@@ -21,10 +22,11 @@ import Sun_screen from '../src/assets/Sun_screen.png';
 import Survival_guidebook from '../src/assets/Survival_guidebook.png';
 import Tent from '../src/assets/Tent.png';
 import Whistle from '../src/assets/Whistle.png';
-import King from '../src/assets/King.png'
+import King from '../src/assets/King.png';
 
 function Data() {
   const [Apidata, setApidata] = useState([]);
+  const [error, setError] = useState(null);
 
   const itemImages = {
     "Bag_of_clothes": Bag_of_clothes,
@@ -49,41 +51,62 @@ function Data() {
     "Whistle": Whistle
   };
 
-  useEffect(() => {
+  const fetchData = () => {
     axios
       .get(`https://sheet.best/api/sheets/5627cb1a-0d46-446f-9b7d-84e8d01dd99a`)
-      .then((incomingData) => {
-        setApidata(incomingData.data);
-      });
+      .then((res) => setApidata(res.data))
+      .catch(err => setError(err.message));
+  };
+
+  useEffect(() => {
+    fetchData();
+    const interval = setInterval(fetchData, 60000); // Fetch data every 60 seconds
+
+    return () => clearInterval(interval); // Clear interval on component unmount
   }, []);
 
   return (
     <>
+      {error && <p className="error-message">{error}</p>}
       <div className="grid grid-cols-1 gap-2">
-      {Apidata.filter((data) => data.status !== "hide").map((data) => {
-        return (
-              <div className="p-5 bg-white shadow-md rounded-md"  key={data.id}>
-                <div className="flex justify-between items-center">
-                    <p className="rounded-3 font-bold text-xl">{data.GroupName}</p>
-                    <div className="flex"><img src={King} className="w-5" alt="" /><p className="rounded-3 font-bold ms-2">{data.LeaderName}</p></div>
+        {Apidata.filter((data) => data.status !== "hide").map((data, i) => {
+          return (
+            <motion.div 
+              initial={{ opacity:0,translateY: -40 }}
+              animate={{ opacity:1,translateY: 0 }}
+              transition={{ duration: 0.25, delay: i * 0.1 }} // Use `i` for delay
+              className="p-5 rounded-md" key={data.id}
+            >
+              <motion.div 
+              initial={{ opacity:0,translateY: 20 }}
+              animate={{ opacity:1,translateY: 0 }}
+              transition={{delay : 1}}
+              className="flex items-center">
+                <p className="rounded-3 bg-white px-2 p-1 rounded-t-md font-bold text-xl">{data.GroupName}</p>
+                <div className="flex bg-white px-2 ms-2 mt-1 rounded-t-md p-1">
+                  <img src={King} className="w-5" alt="" />
+                  <p className="rounded-3 font-bold ms-2">{data.LeaderName}</p>
                 </div>
-             
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-                    {data.Items.split(",").map((item, index) => (
-                          <div key={index}>
-                          <div className="p-1 m-2 flex flex-col shadow-md rounded-md outline outline-1 outline-slate-300/75 items-center justify-center">
-                            {itemImages[item.trim()] && <img src={itemImages[item.trim()]} className="p-5  w-[143px] h-[120px]" alt={item} />}
-                          <p className="font-bold">{item}</p>
-                          </div>
-                        </div>
-                    ))}
-                    </div>
-              
-                </div>
-        );
-      })}
+              </motion.div>
+              <div className="grid grid-cols-1 p-3 rounded-tr-md w-full rounded-b-md bg-white shadow-md md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+                {data.Items.split(",").map((item, index) => (
+                  <div key={index}>
+                    <motion.div  
+                      initial={{ scale: 0.2 }}
+                      animate={{ scale: 1 }} 
+                      transition={{delay : 0.2 * index}}
+                      className="p-1 m-2 flex flex-col shadow-md rounded-md outline outline-1 outline-slate-300/75 items-center justify-center"
+                    >
+                      {itemImages[item.trim()] && <img src={itemImages[item.trim()]} className="p-5 w-[143px] h-[120px]" alt={item} />}
+                      <p className="font-bold">{item}</p>
+                    </motion.div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
-      
     </>
   );
 }
