@@ -2,6 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  font-family: "Mitr", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 .jungle_background{
   background-image: url("./assets/jungle_background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  
+}
+
+.item-box {
+  position: relative;
+  overflow: hidden;
+}
+
+.item-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+    height: 100%;
+    width: 100%;
+    transition: 0.3s;
+    border-radius: 5px;
+    padding: 10px;
+    opacity: 0;
+}
+
+@keyframes dash {
+  to {
+      background-position: 100% 0%, 0% 100%, 0% 0%, 100% 100%;
+  }
+}
+
+.item-box:hover:before {
+  opacity: 1;
+    background: linear-gradient(90deg, rgb(255, 255, 255) 50%, transparent 50%), 
+    linear-gradient(90deg, rgb(255, 255, 255) 50%, transparent 50%), 
+    linear-gradient(0deg, rgb(255, 255, 255) 50%, transparent 50%), 
+    linear-gradient(0deg, rgb(255, 255, 255) 50%, transparent 50%);
+  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+  background-size: 16px 4px, 16px 4px, 4px 16px, 4px 16px;
+  background-position: 0% 0%, 100% 100%, 0% 100%, 100% 0px;
+  animation: dash 20s linear infinite;
 }

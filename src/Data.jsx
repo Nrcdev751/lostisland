@@ -68,24 +68,24 @@ function Data() {
   return (
     <>
       {error && <p className="error-message">{error}</p>}
-      <div className="grid grid-cols-1 gap-2">
+      <div className="grid grid-cols-1 gap-2 " >
         {Apidata.filter((data) => data.status !== "hide").map((data, i) => {
           return (
             <motion.div 
               initial={{ opacity:0,translateY: -40 }}
               animate={{ opacity:1,translateY: 0 }}
               transition={{ duration: 0.25, delay: i * 0.1 }} // Use `i` for delay
-              className="p-5 rounded-md" key={data.id}
+              className="p-5 rounded-md item-box" key={data.id}
             >
               <motion.div 
               initial={{ opacity:0,translateY: 20 }}
               animate={{ opacity:1,translateY: 0 }}
               transition={{delay : 1}}
               className="flex items-center">
-                <p className="rounded-3 bg-white px-2 p-1 rounded-t-md font-bold text-xl">{data.GroupName}</p>
-                <div className="flex bg-white px-2 ms-2 mt-1 rounded-t-md p-1">
-                  <img src={King} className="w-5" alt="" />
-                  <p className="rounded-3 font-bold ms-2">{data.LeaderName}</p>
+                <p className="rounded-3 bg-white px-2 p-1 mt-1 rounded-t-md  text-xl">Team {data.GroupName}</p>
+                <div className="flex bg-white px-2 ms-2 mt-2 rounded-t-md p-1">
+                  <img src={King} className="w-7" alt="" />
+                  <p className="rounded-3  ms-2">{data.LeaderName}</p>
                 </div>
               </motion.div>
               <div className="grid grid-cols-1 p-3 rounded-tr-md w-full rounded-b-md bg-white shadow-md md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
@@ -98,7 +98,7 @@ function Data() {
                       className="p-1 m-2 flex flex-col shadow-md rounded-md outline outline-1 outline-slate-300/75 items-center justify-center"
                     >
                       {itemImages[item.trim()] && <img src={itemImages[item.trim()]} className="p-5 w-[143px] h-[120px]" alt={item} />}
-                      <p className="font-bold">{item}</p>
+                      <p className="">{item}</p>
                     </motion.div>
                   </div>
                 ))}
