@@ -92,8 +92,8 @@ function Data() {
                 {data.Items.split(",").map((item, index) => (
                   <div key={index}>
                     <motion.div  
-                      initial={{ scale: 0.2 }}
-                      animate={{ scale: 1 }} 
+                      initial={{ opacity:0,scale: 0.2 }}
+                      animate={{ opacity:1,scale: 1 }} 
                       transition={{delay : 0.2 * index}}
                       className="p-1 m-2 flex flex-col shadow-md rounded-md outline outline-1 outline-slate-300/75 items-center justify-center"
                     >
